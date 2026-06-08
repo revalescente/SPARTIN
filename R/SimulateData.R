@@ -8,8 +8,7 @@
 #' @param winY Vertical height of the simulation window.
 #' @param r Radius of interaction; only necessary for phi > 0, i.e. positive
 #' interaction between points.
-#' @import purrr
-#' @import spatstat
+#' @import spatstat.geom
 #' @export
 SimulateData = function(n1, n2, phi, winX, winY, r = NULL){
   if(phi < -1 || phi > 1)
@@ -27,8 +26,8 @@ SimulateData = function(n1, n2, phi, winX, winY, r = NULL){
     final.y = c(t1.y, t2.y)
     final.marks = factor(c(rep(1, n1), rep(2, n2)))
 
-    final.pp = ppp(x = final.x, y = final.y, marks = final.marks,
-                   window = owin(c(0, winX), c(0, winY)))
+    final.pp = spatstat.geom::ppp(x = final.x, y = final.y, marks = final.marks,
+                   window = spatstat.geom::owin(c(0, winX), c(0, winY)))
 
   }else{
     if(is.null(r))
@@ -39,7 +38,7 @@ SimulateData = function(n1, n2, phi, winX, winY, r = NULL){
 
     # Generate "nearness" indicators, i.e. whether each til will be near tumor cell
     # or randomly generated
-    t2.near.t1 = rbernoulli(n2, p = phi)
+    t2.near.t1 = rbinom(n2, 1, phi) == 1
 
     # Random til x values
     t2.not.near.x = runif(sum(!t2.near.t1), 0, winX)
@@ -59,8 +58,8 @@ SimulateData = function(n1, n2, phi, winX, winY, r = NULL){
     final.y = c(t1.y, t2.not.near.y, til.near.y)
     final.marks = factor(c(rep(1, n1), rep(2, n2)))
 
-    final.pp = ppp(x = final.x, y = final.y, marks = final.marks,
-                   window = owin(c(0, winX), c(0, winY)))
+    final.pp = spatstat.geom::ppp(x = final.x, y = final.y, marks = final.marks,
+                   window = spatstat.geom::owin(c(0, winX), c(0, winY)))
   }
 
   return(final.pp)
