@@ -38,6 +38,8 @@
 #' @import magrittr
 #' @import tibble
 #' @import dplyr
+#' @import spatstat.geom
+#' @import spatstat.explore
 #' @export
 TessellateBiopsy = function(full.tib, sigma, eps,
                            threshold, clust.size,
@@ -52,11 +54,11 @@ TessellateBiopsy = function(full.tib, sigma, eps,
   if(progress) print("Intensity thresholding...")
 
   pp = TibbleToPPP(full.tib)
-  tk = density.ppp(pp, sigma = sigma, eps = eps)
+  tk = spatstat.explore::density.ppp(pp, sigma = sigma, eps = eps)
 
   test.v = apply(tk$v, 2, rev)
 
-  pos.int = which(tk$v > threshold, arr.ind = T)
+  pos.int = which(tk$v > threshold, arr.ind = TRUE)
 
   x.min = min(pp$x)
   y.min = min(pp$y)
@@ -283,11 +285,9 @@ TessellateBiopsy = function(full.tib, sigma, eps,
                                                  y = cur.win$bdry[[ec]]$y)
                                                  )
 
-          cur.sub.tile = ppp(x = pp$x, y = pp$y,
+          cur.sub.tile = spatstat.geom::ppp(x = pp$x, y = pp$y,
                              marks = pp$marks,
                              window = cur.sub.tile.window)
-
-          cur.sub.tile = as.ppp(cur.sub.tile)
 
           sub.tile.point.counts[ec] = cur.sub.tile$n
         }

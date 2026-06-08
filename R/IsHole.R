@@ -2,7 +2,7 @@
 #' @param x vector of x-coordinates of points
 #' @param y vector of y-coordinates of points
 #' @return boolean
-#' @import spatstat
+#' @import spatstat.geom
 #' @noRd
 IsHole = function(x, y){
   if(length(x) != length(y))
@@ -18,10 +18,10 @@ IsHole = function(x, y){
 
 
 
-  testwindow = try(owin(poly = list(x = x, y = y)),
-                   silent = T)
+  testwindow = try(spatstat.geom::owin(poly = list(x = x, y = y)),
+                   silent = TRUE)
 
-  if(class(testwindow) == "try-error"){
+  if(inherits(testwindow, "try-error")){
     return(TRUE)
   }else{
     return(FALSE)

@@ -25,6 +25,9 @@
 #' to the actual fitted model, and "null.samples" gives samples from simulated
 #' null distribution
 #' @import spatstat.model
+#' @import spatstat.geom
+#' @import spatstat.random
+#' @import purrr
 #' @noRd
 FullFit = function(tile, r, quad.spacing,
                    n.null = 5,
@@ -41,11 +44,11 @@ FullFit = function(tile, r, quad.spacing,
   #
   # glmdata = freq.model$internal$glmdata
 
-  window.area = area.owin(tile$window)
+  window.area = spatstat.geom::area.owin(tile$window)
   tumor.intensity = sum(tile$marks == 1)/window.area
   til.intensity = sum(tile$marks == 2)/window.area
 
-  tums = ppp(x = tile$x[tile$marks == 1],
+  tums = spatstat.geom::ppp(x = tile$x[tile$marks == 1],
              y = tile$y[tile$marks == 1],
              window = tile$window)
 
@@ -62,14 +65,14 @@ FullFit = function(tile, r, quad.spacing,
                               log.gamma.mean = log.gamma.mean,
                               log.gamma.prec = log.gamma.prec)
 
-  null.samples = unlist(map(1:n.null, function(x){
-    tils = rpoispp(til.intensity, win = tile$window)
+  null.samples = unlist(purrr::map(1:n.null, function(x){
+    tils = spatstat.random::rpoispp(til.intensity, win = tile$window)
 
     x = c(tums$x, tils$x)
     y = c(tums$y, tils$y)
     marks = factor(c(rep(1, tums$n), rep(2, tils$n)))
 
-    null.sim = ppp(x = x, y = y, marks = marks, window = tile$window)
+    null.sim = spatstat.geom::ppp(x = x, y = y, marks = marks, window = tile$window)
     # stop()
     # null.freq = FitHSFreq(null.sim, r = r, quad.spacing = quad.spacing,
     #                       correction = correction)
