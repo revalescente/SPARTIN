@@ -289,8 +289,6 @@ TessellateBiopsy = function(full.tib, sigma, eps,
                              marks = pp$marks,
                              window = cur.sub.tile.window)
 
-          cur.sub.tile = spatstat.geom::as.ppp(cur.sub.tile)
-
           sub.tile.point.counts[ec] = cur.sub.tile$n
         }
 
