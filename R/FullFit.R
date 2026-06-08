@@ -87,7 +87,7 @@ FullFit = function(tile, r, quad.spacing,
                             log.gamma.mean = log.gamma.mean,
                             log.gamma.prec = log.gamma.prec)
 
-   return(null.model$BUGSoutput$sims.list$log.gamma)
+    return(null.model$BUGSoutput$sims.list$log.gamma)
   }))
 
   ret.obj = {}
