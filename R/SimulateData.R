@@ -38,7 +38,7 @@ SimulateData = function(n1, n2, phi, winX, winY, r = NULL){
 
     # Generate "nearness" indicators, i.e. whether each til will be near tumor cell
     # or randomly generated
-    t2.near.t1 = rbinom(n2, 1, phi) == 1
+    t2.near.t1 = as.logical(rbinom(n2, 1, phi))
 
     # Random til x values
     t2.not.near.x = runif(sum(!t2.near.t1), 0, winX)
