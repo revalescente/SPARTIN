@@ -19,7 +19,7 @@ IsHole = function(x, y){
 
 
   testwindow = try(spatstat.geom::owin(poly = list(x = x, y = y)),
-                   silent = T)
+                   silent = TRUE)
 
   if(inherits(testwindow, "try-error")){
     return(TRUE)

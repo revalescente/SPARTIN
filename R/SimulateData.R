@@ -45,7 +45,7 @@ SimulateData = function(n1, n2, phi, winX, winY, r = NULL){
     t2.not.near.y = runif(sum(!t2.near.t1), 0, winY)
 
     # Which tumor cell should each til be near (if applicable)
-    t1.centers = sample(1:n1, sum(t2.near.t1), replace = T)
+    t1.centers = sample(1:n1, sum(t2.near.t1), replace = TRUE)
     # Generate offsets from tumor centers within radius r, using
     # polar coordinates
     t2.near.r = runif(sum(t2.near.t1), 0, r)

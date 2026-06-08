@@ -58,7 +58,7 @@ TessellateBiopsy = function(full.tib, sigma, eps,
 
   test.v = apply(tk$v, 2, rev)
 
-  pos.int = which(tk$v > threshold, arr.ind = T)
+  pos.int = which(tk$v > threshold, arr.ind = TRUE)
 
   x.min = min(pp$x)
   y.min = min(pp$y)
